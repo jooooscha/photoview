@@ -22,12 +22,14 @@ import client from '../../apolloClient'
 export const MY_TIMELINE_QUERY = gql`
   query myTimeline(
     $onlyFavorites: Boolean
+    $onlyShares: Boolean
     $limit: Int
     $offset: Int
     $fromDate: Time
   ) {
     myTimeline(
       onlyFavorites: $onlyFavorites
+      onlyShares: $onlyShares
       fromDate: $fromDate
       paginate: { limit: $limit, offset: $offset }
     ) {
@@ -108,6 +110,7 @@ const TimelineGallery = () => {
   >(MY_TIMELINE_QUERY, {
     variables: {
       onlyFavorites,
+      onlyShares,
       fromDate: filterDate
         ? `${parseInt(filterDate) + 1}-01-01T00:00:00Z`
         : undefined,
@@ -136,6 +139,7 @@ const TimelineGallery = () => {
       await client.resetStore()
       await refetch({
         onlyFavorites,
+        onlyShares,
         fromDate: filterDate
           ? `${parseInt(filterDate) + 1}-01-01T00:00:00Z`
           : undefined,
@@ -159,8 +163,9 @@ const TimelineGallery = () => {
     favoritesNeedsRefresh.current = false
     refetch({
       onlyFavorites: onlyFavorites,
+      onlyShares: onlyShares,
     })
-  }, [onlyFavorites])
+  }, [onlyFavorites, onlyShares])
 
   if (error) {
     return <div>{error.message}</div>

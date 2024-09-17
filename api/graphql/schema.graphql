@@ -78,6 +78,7 @@ type Query {
   myTimeline(
     paginate: Pagination,
     onlyFavorites: Boolean,
+    onlyShares: Boolean,
     "Only fetch media that is older than this date"
     fromDate: Time
   ): [Media!]! @isAuthorized

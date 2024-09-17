@@ -8,7 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
-func MyTimeline(db *gorm.DB, user *models.User, paginate *models.Pagination, onlyFavorites *bool, onlyShares *bool, fromDate *time.Time) ([]*models.Media, error) {
+func MyTimeline(
+  db *gorm.DB,
+  user *models.User,
+  paginate *models.Pagination,
+  onlyFavorites *bool,
+  onlyShares *bool,
+  fromDate *time.Time,
+) ([]*models.Media, error) {
 
 	query := db.
 		Joins("JOIN albums ON media.album_id = albums.id").

@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
-import type mapboxgl from 'mapbox-gl'
+import mapboxgl from 'mapbox-gl'
 import React, { useReducer } from 'react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
@@ -110,6 +110,21 @@ const configureMapbox =
         console.error('ERROR: map is null')
         return
       }
+
+      let coords = mapboxData.myMediaGeoJson.features.map(val =>
+        [ val.geometry.coordinates[0], val.geometry.coordinates[1] ]
+      );
+
+      let bounds = new mapboxgl.LngLatBounds(coords[0], coords[0]);
+
+      for (let i = 1; i < coords.length; i++) {
+          bounds.extend(coords[i]);
+      }
+      map.fitBounds(bounds, {
+          padding: 20, // Adds padding so points aren't at the edge
+          maxZoom: 15, // Maximum zoom level
+          duration: 1000 // Animation duration in ms
+      });
 
       map.addSource('media', {
         type: 'geojson',

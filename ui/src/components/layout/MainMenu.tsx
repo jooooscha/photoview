@@ -46,7 +46,7 @@ const MenuButton = ({
       end={exact}
       className={({ isActive }) =>
         tailwindClassNames(
-          `rounded-lg my-2 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-bg`,
+          `rounded my-2 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-bg`,
           className,
           {
             [`ring-4 lg:ring-4 ${activeClasses ?? ''}`]: isActive,
@@ -86,7 +86,7 @@ export const MainMenu = () => {
     !!faceDetectionEnabledQuery?.data?.siteInfo?.faceDetectionEnabled
 
   return (
-    <div className="fixed w-full bottom-0 lg:bottom-auto lg:top-[84px] z-30 bg-white dark:bg-dark-bg shadow-separator lg:shadow-none lg:w-[240px] lg:ml-8 lg:mr-5 flex-shrink-0">
+    <div className="fixed w-full bottom-0 lg:bottom-auto lg:top-[84px] z-30 bg-white dark:bg-dark-bg shadow-separator lg:shadow-none lg:w-[240px] lg:ml-8 lg:mr-5 flex-shrink-0 p-2 rounded" >
       <ul className="flex justify-around py-2 px-2 max-w-lg mx-auto lg:flex-col lg:p-0">
         <MenuButton
           to="/timeline"

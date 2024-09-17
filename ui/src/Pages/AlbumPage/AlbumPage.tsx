@@ -47,6 +47,10 @@ function AlbumPage() {
   const setOnlyFavorites = (favorites: boolean) =>
     urlParams.setParam('favorites', favorites ? '1' : '0')
 
+  const onlyShares = urlParams.getParam('shares') == '1' ? true : false
+  const setOnlyShares = (shares: boolean) =>
+    urlParams.setParam('shares', shares ? '1' : '0')
+
   const { loading, error, data, refetch, fetchMore } = useQuery<
     albumQuery,
     albumQueryVariables
@@ -90,6 +94,27 @@ function AlbumPage() {
     [setOnlyFavorites, refetch]
   )
 
+  const toggleShares = useCallback(
+    (onlyShares: boolean) => {
+      if (
+        (refetchNeededAll && !onlyShares) ||
+        (refetchNeededFavorites && onlyShares)
+      ) {
+        refetch({ id: albumId, onlyShares: onlyShares }).then(() => {
+          if (onlyShares) {
+            refetchNeededShares = false
+          } else {
+            refetchNeededAll = false
+          }
+          setOnlyShares(onlyShares)
+        })
+      } else {
+        setOnlyShares(onlyShares)
+      }
+    },
+    [setOnlyShares, refetch]
+  )
+
   if (error) return <div>Error</div>
 
   return (
@@ -103,7 +128,9 @@ function AlbumPage() {
         album={data && data.album}
         loading={loading}
         setOnlyFavorites={toggleFavorites}
+        setOnlyShares={toggleShares}
         onlyFavorites={onlyFavorites}
+        onlyShares={onlyShares}
         onFavorite={() => (refetchNeededAll = refetchNeededFavorites = true)}
         showFilter
         setOrdering={orderParams.setOrdering}

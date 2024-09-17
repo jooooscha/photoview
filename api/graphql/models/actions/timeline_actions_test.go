@@ -88,7 +88,7 @@ func TestMyTimeline(t *testing.T) {
 	assert.NoError(t, db.Model(&anotherUser).Association("Albums").Append(&anotherAlbum))
 
 	t.Run("MyTimeline with no filters", func(t *testing.T) {
-		timelineMedia, err := actions.MyTimeline(db, user, nil, nil, nil)
+		timelineMedia, err := actions.MyTimeline(db, user, nil, nil, nil, nil)
 
 		assert.NoError(t, err)
 		assert.Len(t, timelineMedia, 4)
@@ -101,7 +101,7 @@ func TestMyTimeline(t *testing.T) {
 
 	t.Run("MyTimeline with only favorites", func(t *testing.T) {
 		favorites := true
-		timelineMedia, err := actions.MyTimeline(db, user, nil, &favorites, nil)
+		timelineMedia, err := actions.MyTimeline(db, user, nil, &favorites, nil, nil)
 
 		assert.NoError(t, err)
 		assert.Len(t, timelineMedia, 1)
@@ -109,7 +109,7 @@ func TestMyTimeline(t *testing.T) {
 
 	t.Run("MyTimeline before date", func(t *testing.T) {
 		beforeDate := time.Unix(1629792000, 0) // Aug 24 2021 08:00:00
-		timelineMedia, err := actions.MyTimeline(db, user, nil, nil, &beforeDate)
+		timelineMedia, err := actions.MyTimeline(db, user, nil, nil, nil, &beforeDate)
 
 		assert.NoError(t, err)
 		assert.Len(t, timelineMedia, 2)

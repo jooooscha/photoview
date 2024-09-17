@@ -32,6 +32,22 @@ export const FavoritesCheckbox = ({
   )
 }
 
+export const SharesCheckbox = ({
+  onlyShares,
+  setOnlyShares,
+}: SharesCheckboxProps) => {
+  const { t } = useTranslation()
+
+  return (
+    <Checkbox
+      className="mb-1"
+      label={t('album_filter.todo', 'Show only shared images')} // TODO
+      checked={onlyShares}
+      onChange={e => setOnlyShares(e.target.checked)}
+    />
+  )
+}
+
 type SortingOptionsProps = {
   ordering?: MediaOrdering
   setOrdering?: SetOrderingFn
@@ -117,6 +133,8 @@ const SortingOptions = ({ setOrdering, ordering }: SortingOptionsProps) => {
 type AlbumFilterProps = {
   onlyFavorites: boolean
   setOnlyFavorites?(favorites: boolean): void
+  onlyShares: boolean
+  setOnlyShares?(favorites: boolean): void
   ordering?: MediaOrdering
   setOrdering?: SetOrderingFn
 }
@@ -124,6 +142,8 @@ type AlbumFilterProps = {
 const AlbumFilter = ({
   onlyFavorites,
   setOnlyFavorites,
+  onlyShares,
+  setOnlyShares,
   setOrdering,
   ordering,
 }: AlbumFilterProps) => {
@@ -134,6 +154,12 @@ const AlbumFilter = ({
         <FavoritesCheckbox
           onlyFavorites={onlyFavorites}
           setOnlyFavorites={setOnlyFavorites}
+        />
+      )}
+      {authToken() && setOnlyShares && (
+        <SharesCheckbox
+          onlyShares={onlyShares}
+          setOnlyShares={setOnlyShares}
         />
       )}
     </div>

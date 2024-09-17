@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import Dropdown, { DropdownItem } from '../../primitives/form/Dropdown'
-import { FavoriteCheckboxProps, FavoritesCheckbox } from '../album/AlbumFilter'
+import { FavoriteCheckboxProps, FavoritesCheckbox, SharesCheckbox } from '../album/AlbumFilter'
 
 import { ReactComponent as DateIcon } from './icons/date.svg'
 import { earliestMedia } from './__generated__/earliestMedia'
@@ -90,6 +90,8 @@ type TimelineFiltersProps = DateSelectorProps & FavoriteCheckboxProps
 const TimelineFilters = ({
   onlyFavorites,
   setOnlyFavorites,
+  onlyShares,
+  setOnlyShares,
   filterDate,
   setFilterDate,
 }: TimelineFiltersProps) => {
@@ -99,6 +101,10 @@ const TimelineFilters = ({
       <FavoritesCheckbox
         onlyFavorites={onlyFavorites}
         setOnlyFavorites={setOnlyFavorites}
+      />
+      <SharesCheckbox
+        onlyShares={onlyShares}
+        setOnlyShares={setOnlyShares}
       />
     </div>
   )

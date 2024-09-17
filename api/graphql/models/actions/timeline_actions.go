@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func MyTimeline(db *gorm.DB, user *models.User, paginate *models.Pagination, onlyFavorites *bool, fromDate *time.Time) ([]*models.Media, error) {
+func MyTimeline(db *gorm.DB, user *models.User, paginate *models.Pagination, onlyFavorites *bool, onlyShares *bool, fromDate *time.Time) ([]*models.Media, error) {
 
 	query := db.
 		Joins("JOIN albums ON media.album_id = albums.id").
@@ -41,7 +41,11 @@ func MyTimeline(db *gorm.DB, user *models.User, paginate *models.Pagination, onl
 	}
 
 	if onlyFavorites != nil && *onlyFavorites {
-		query = query.Where("media.id IN (?)", db.Table("user_media_data").Select("user_media_data.media_id").Where("user_media_data.user_id = ?", user.ID).Where("user_media_data.favorite"))
+        query = query.Where("media.id IN (?)", db.Table("user_media_data").Select("user_media_data.media_id").Where("user_media_data.user_id = ?", user.ID).Where("user_media_data.favorite"))
+	}
+
+	if onlyShares != nil && *onlyShares {
+		query = query.Where("media.id IN (?)", db.Table("share_tokens").Select("share_tokens.media_id").Where("share_tokens.owner_id = ?", user.ID)) // TODO
 	}
 
 	query = models.FormatSQL(query, nil, paginate)

@@ -59,9 +59,11 @@ const AlbumGallery = React.forwardRef(
       customAlbumLink,
       showFilter = false,
       setOnlyFavorites,
+      setOnlyShares,
       setOrdering,
       ordering,
       onlyFavorites = false,
+      onlyShares = false,
     }: AlbumGalleryProps,
     ref: React.ForwardedRef<HTMLDivElement>
   ) => {
@@ -105,6 +107,8 @@ const AlbumGallery = React.forwardRef(
           <AlbumFilter
             onlyFavorites={onlyFavorites}
             setOnlyFavorites={setOnlyFavorites}
+            onlyShares={onlyShares}
+            setOnlyShares={setOnlyShares}
             setOrdering={setOrdering}
             ordering={ordering}
           />

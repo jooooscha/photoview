@@ -83,6 +83,10 @@ const TimelineGallery = () => {
   const setOnlyFavorites = (favorites: boolean) =>
     setParam('favorites', favorites ? '1' : null)
 
+  const onlyShares = getParam('shares') == '1' ? true : false
+  const setOnlyShares = (shares: boolean) =>
+    setParam('shares', shares ? '1' : null)
+
   const filterDate = getParam('date')
   const setFilterDate = (x: string) => setParam('date', x)
 
@@ -176,6 +180,8 @@ const TimelineGallery = () => {
       <TimelineFilters
         onlyFavorites={onlyFavorites}
         setOnlyFavorites={setOnlyFavorites}
+        onlyShares={onlyShares}
+        setOnlyShares={setOnlyShares}
         filterDate={filterDate}
         setFilterDate={setFilterDate}
       />

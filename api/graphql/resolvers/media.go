@@ -192,6 +192,18 @@ func (r *mediaResolver) Favorite(ctx context.Context, media *models.Media) (bool
 	})
 }
 
+func (r *mediaResolver) Shared(ctx context.Context, media *models.Media) (bool, error) {
+	user := auth.UserFromContext(ctx)
+	if user == nil {
+		return false, auth.ErrUnauthorized
+	}
+
+	return dataloader.For(ctx).UserMediaFavorite.Load(&models.UserMediaData{
+		UserID:  user.ID,
+		MediaID: media.ID,
+	})
+}
+
 func (r *mutationResolver) FavoriteMedia(ctx context.Context, mediaID int, favorite bool) (*models.Media, error) {
 
 	user := auth.UserFromContext(ctx)

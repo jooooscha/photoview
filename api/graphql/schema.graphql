@@ -382,6 +382,7 @@ type Media {
   exif: MediaEXIF
   videoMetadata: VideoMetadata
   favorite: Boolean!
+  shared: Boolean!
   type: MediaType!
   "The date the image was shot or the date it was imported as a fallback"
   date: Time!

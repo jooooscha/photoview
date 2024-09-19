@@ -16,6 +16,7 @@ type Loaders struct {
 	MediaVideoWeb       *MediaURLLoader
 	UserFromAccessToken *UserLoader
 	UserMediaFavorite   *UserFavoritesLoader
+	// UserMediaShared     *UserSharedLoader
 }
 
 func Middleware(db *gorm.DB) mux.MiddlewareFunc {
@@ -28,6 +29,7 @@ func Middleware(db *gorm.DB) mux.MiddlewareFunc {
 				MediaVideoWeb:       NewVideoWebMediaURLLoader(db),
 				UserFromAccessToken: NewUserLoaderByToken(db),
 				UserMediaFavorite:   NewUserFavoriteLoader(db),
+				UserMediaShared:     NewUserSharedLoader(db),
 			})
 
 			r = r.WithContext(ctx)

@@ -104,6 +104,9 @@ const TimelineGallery = () => {
     },
   })
 
+    console.log("TimelineGallery:")
+    console.log(mediaState)
+
   const { data, error, loading, refetch, fetchMore } = useQuery<
     myTimeline,
     myTimelineVariables

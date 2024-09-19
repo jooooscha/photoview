@@ -115,6 +115,7 @@ type ComplexityRoot struct {
 		HighRes       func(childComplexity int) int
 		ID            func(childComplexity int) int
 		Path          func(childComplexity int) int
+		Shared        func(childComplexity int) int
 		Shares        func(childComplexity int) int
 		Thumbnail     func(childComplexity int) int
 		Title         func(childComplexity int) int
@@ -307,6 +308,7 @@ type MediaResolver interface {
 	Exif(ctx context.Context, obj *models.Media) (*models.MediaEXIF, error)
 
 	Favorite(ctx context.Context, obj *models.Media) (bool, error)
+	Shared(ctx context.Context, obj *models.Media) (bool, error)
 	Type(ctx context.Context, obj *models.Media) (models.MediaType, error)
 
 	Shares(ctx context.Context, obj *models.Media) ([]*models.ShareToken, error)
@@ -665,6 +667,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Media.Path(childComplexity), true
+
+	case "Media.shared":
+		if e.complexity.Media.Shared == nil {
+			break
+		}
+
+		return e.complexity.Media.Shared(childComplexity), true
 
 	case "Media.shares":
 		if e.complexity.Media.Shares == nil {
@@ -2889,6 +2898,8 @@ func (ec *executionContext) fieldContext_Album_media(ctx context.Context, field 
 				return ec.fieldContext_Media_videoMetadata(ctx, field)
 			case "favorite":
 				return ec.fieldContext_Media_favorite(ctx, field)
+			case "shared":
+				return ec.fieldContext_Media_shared(ctx, field)
 			case "type":
 				return ec.fieldContext_Media_type(ctx, field)
 			case "date":
@@ -3215,6 +3226,8 @@ func (ec *executionContext) fieldContext_Album_thumbnail(_ context.Context, fiel
 				return ec.fieldContext_Media_videoMetadata(ctx, field)
 			case "favorite":
 				return ec.fieldContext_Media_favorite(ctx, field)
+			case "shared":
+				return ec.fieldContext_Media_shared(ctx, field)
 			case "type":
 				return ec.fieldContext_Media_type(ctx, field)
 			case "date":
@@ -4050,6 +4063,8 @@ func (ec *executionContext) fieldContext_ImageFace_media(_ context.Context, fiel
 				return ec.fieldContext_Media_videoMetadata(ctx, field)
 			case "favorite":
 				return ec.fieldContext_Media_favorite(ctx, field)
+			case "shared":
+				return ec.fieldContext_Media_shared(ctx, field)
 			case "type":
 				return ec.fieldContext_Media_type(ctx, field)
 			case "date":
@@ -4706,6 +4721,50 @@ func (ec *executionContext) fieldContext_Media_favorite(_ context.Context, field
 	return fc, nil
 }
 
+func (ec *executionContext) _Media_shared(ctx context.Context, field graphql.CollectedField, obj *models.Media) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Media_shared(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Media().Shared(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Media_shared(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Media",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Media_type(ctx context.Context, field graphql.CollectedField, obj *models.Media) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Media_type(ctx, field)
 	if err != nil {
@@ -5200,6 +5259,8 @@ func (ec *executionContext) fieldContext_MediaEXIF_media(_ context.Context, fiel
 				return ec.fieldContext_Media_videoMetadata(ctx, field)
 			case "favorite":
 				return ec.fieldContext_Media_favorite(ctx, field)
+			case "shared":
+				return ec.fieldContext_Media_shared(ctx, field)
 			case "type":
 				return ec.fieldContext_Media_type(ctx, field)
 			case "date":
@@ -6618,6 +6679,8 @@ func (ec *executionContext) fieldContext_Mutation_favoriteMedia(ctx context.Cont
 				return ec.fieldContext_Media_videoMetadata(ctx, field)
 			case "favorite":
 				return ec.fieldContext_Media_favorite(ctx, field)
+			case "shared":
+				return ec.fieldContext_Media_shared(ctx, field)
 			case "type":
 				return ec.fieldContext_Media_type(ctx, field)
 			case "date":
@@ -8899,6 +8962,8 @@ func (ec *executionContext) fieldContext_Query_myMedia(ctx context.Context, fiel
 				return ec.fieldContext_Media_videoMetadata(ctx, field)
 			case "favorite":
 				return ec.fieldContext_Media_favorite(ctx, field)
+			case "shared":
+				return ec.fieldContext_Media_shared(ctx, field)
 			case "type":
 				return ec.fieldContext_Media_type(ctx, field)
 			case "date":
@@ -8988,6 +9053,8 @@ func (ec *executionContext) fieldContext_Query_media(ctx context.Context, field 
 				return ec.fieldContext_Media_videoMetadata(ctx, field)
 			case "favorite":
 				return ec.fieldContext_Media_favorite(ctx, field)
+			case "shared":
+				return ec.fieldContext_Media_shared(ctx, field)
 			case "type":
 				return ec.fieldContext_Media_type(ctx, field)
 			case "date":
@@ -9077,6 +9144,8 @@ func (ec *executionContext) fieldContext_Query_mediaList(ctx context.Context, fi
 				return ec.fieldContext_Media_videoMetadata(ctx, field)
 			case "favorite":
 				return ec.fieldContext_Media_favorite(ctx, field)
+			case "shared":
+				return ec.fieldContext_Media_shared(ctx, field)
 			case "type":
 				return ec.fieldContext_Media_type(ctx, field)
 			case "date":
@@ -9186,6 +9255,8 @@ func (ec *executionContext) fieldContext_Query_myTimeline(ctx context.Context, f
 				return ec.fieldContext_Media_videoMetadata(ctx, field)
 			case "favorite":
 				return ec.fieldContext_Media_favorite(ctx, field)
+			case "shared":
+				return ec.fieldContext_Media_shared(ctx, field)
 			case "type":
 				return ec.fieldContext_Media_type(ctx, field)
 			case "date":
@@ -10148,6 +10219,8 @@ func (ec *executionContext) fieldContext_SearchResult_media(_ context.Context, f
 				return ec.fieldContext_Media_videoMetadata(ctx, field)
 			case "favorite":
 				return ec.fieldContext_Media_favorite(ctx, field)
+			case "shared":
+				return ec.fieldContext_Media_shared(ctx, field)
 			case "type":
 				return ec.fieldContext_Media_type(ctx, field)
 			case "date":
@@ -10515,6 +10588,8 @@ func (ec *executionContext) fieldContext_ShareToken_media(_ context.Context, fie
 				return ec.fieldContext_Media_videoMetadata(ctx, field)
 			case "favorite":
 				return ec.fieldContext_Media_favorite(ctx, field)
+			case "shared":
+				return ec.fieldContext_Media_shared(ctx, field)
 			case "type":
 				return ec.fieldContext_Media_type(ctx, field)
 			case "date":
@@ -11015,6 +11090,8 @@ func (ec *executionContext) fieldContext_TimelineGroup_media(_ context.Context, 
 				return ec.fieldContext_Media_videoMetadata(ctx, field)
 			case "favorite":
 				return ec.fieldContext_Media_favorite(ctx, field)
+			case "shared":
+				return ec.fieldContext_Media_shared(ctx, field)
 			case "type":
 				return ec.fieldContext_Media_type(ctx, field)
 			case "date":
@@ -11614,6 +11691,8 @@ func (ec *executionContext) fieldContext_VideoMetadata_media(_ context.Context, 
 				return ec.fieldContext_Media_videoMetadata(ctx, field)
 			case "favorite":
 				return ec.fieldContext_Media_favorite(ctx, field)
+			case "shared":
+				return ec.fieldContext_Media_shared(ctx, field)
 			case "type":
 				return ec.fieldContext_Media_type(ctx, field)
 			case "date":
@@ -14696,6 +14775,42 @@ func (ec *executionContext) _Media(ctx context.Context, sel ast.SelectionSet, ob
 					}
 				}()
 				res = ec._Media_favorite(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "shared":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Media_shared(ctx, field, obj)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}

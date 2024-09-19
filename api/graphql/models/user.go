@@ -25,6 +25,7 @@ type UserMediaData struct {
 	UserID   int  `gorm:"primaryKey;autoIncrement:false"`
 	MediaID  int  `gorm:"primaryKey;autoIncrement:false"`
 	Favorite bool `gorm:"not null;default:false"`
+	Shared bool `gorm:"not null;default:false"`
 }
 
 type UserAlbums struct {

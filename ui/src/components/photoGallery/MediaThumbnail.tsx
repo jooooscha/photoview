@@ -166,6 +166,17 @@ export const MediaThumbnail = ({
       />
     )
   }
+  let shareIcon = null
+  if (media.shared !== undefined) {
+    shareIcon = (
+      <FavoriteIcon
+        favorite={media.shared}
+        onClick={e => {
+          e.stopPropagation()
+        }}
+      />
+    )
+  }
 
   let videoIcon = null
   if (media.type == MediaType.Video) {
@@ -208,6 +219,7 @@ export const MediaThumbnail = ({
           }}
         />
         {heartIcon}
+        {shareIcon}
       </PhotoOverlay>
     </MediaContainer>
   )

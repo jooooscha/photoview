@@ -198,7 +198,7 @@ func (r *mediaResolver) Shared(ctx context.Context, media *models.Media) (bool, 
 		return false, auth.ErrUnauthorized
 	}
 
-	return dataloader.For(ctx).UserMediaFavorite.Load(&models.UserMediaData{
+    return dataloader.For(ctx).UserMediaShared.Load(&models.UserMediaData{ // TOTO: change to UserMediaShared
 		UserID:  user.ID,
 		MediaID: media.ID,
 	})
@@ -212,6 +212,16 @@ func (r *mutationResolver) FavoriteMedia(ctx context.Context, mediaID int, favor
 	}
 
 	return user.FavoriteMedia(r.DB(ctx), mediaID, favorite)
+}
+
+func (r *mutationResolver) SharedMedia(ctx context.Context, mediaID int, shared bool) (*models.Media, error) {
+
+	user := auth.UserFromContext(ctx)
+	if user == nil {
+		return nil, auth.ErrUnauthorized
+	}
+
+	return user.SharedMedia(r.DB(ctx), mediaID, shared)
 }
 
 func (r *mediaResolver) Faces(ctx context.Context, media *models.Media) ([]*models.ImageFace, error) {

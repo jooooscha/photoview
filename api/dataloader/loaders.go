@@ -16,7 +16,7 @@ type Loaders struct {
 	MediaVideoWeb       *MediaURLLoader
 	UserFromAccessToken *UserLoader
 	UserMediaFavorite   *UserFavoritesLoader
-	// UserMediaShared     *UserSharedLoader
+    UserMediaShared     *UserSharesLoader
 }
 
 func Middleware(db *gorm.DB) mux.MiddlewareFunc {

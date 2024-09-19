@@ -51,6 +51,7 @@ export const MEDIA_GALLERY_FRAGMENT = gql`
       url
     }
     favorite
+    shared
   }
 `
 

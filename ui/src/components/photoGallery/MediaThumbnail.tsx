@@ -153,6 +153,9 @@ export const MediaThumbnail = ({
 }: MediaThumbnailProps) => {
   let heartIcon = null
   if (media.favorite !== undefined) {
+        console.log("Media:")
+        console.log("Favorite " + media.favorite)
+        console.log("Shared " + media.shared)
     heartIcon = (
       <FavoriteIcon
         favorite={media.favorite}

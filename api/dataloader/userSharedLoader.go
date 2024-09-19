@@ -7,8 +7,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func NewUserSharedLoader(db *gorm.DB) *UserSharedLoader {
-	return &UserSharedLoader{
+func NewUserSharedLoader(db *gorm.DB) *UserSharesLoader {
+	return &UserSharesLoader{
 		maxBatch: 100,
 		wait:     5 * time.Millisecond,
 		fetch: func(keys []*models.UserMediaData) ([]bool, []error) {

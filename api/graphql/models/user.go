@@ -25,7 +25,7 @@ type UserMediaData struct {
 	UserID   int  `gorm:"primaryKey;autoIncrement:false"`
 	MediaID  int  `gorm:"primaryKey;autoIncrement:false"`
 	Favorite bool `gorm:"not null;default:false"`
-	Shared bool `gorm:"not null;default:false"`
+	Shared   bool `gorm:"not null;default:false"`
 }
 
 type UserAlbums struct {
@@ -193,6 +193,26 @@ func (user *User) FavoriteMedia(db *gorm.DB, mediaID int, favorite bool) (*Media
 	var media Media
 	if err := db.First(&media, mediaID).Error; err != nil {
 		return nil, errors.Wrap(err, "get media from database after favorite update")
+	}
+
+	return &media, nil
+}
+
+// SharedMedia sets/clears a media as shared for the user
+func (user *User) SharedMedia(db *gorm.DB, mediaID int, shared bool) (*Media, error) {
+	userMediaData := UserMediaData{
+		UserID:   user.ID,
+		MediaID:  mediaID,
+		Shared: shared,
+	}
+
+	if err := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(&userMediaData).Error; err != nil {
+		return nil, errors.Wrapf(err, "update user shared media in database")
+	}
+
+	var media Media
+	if err := db.First(&media, mediaID).Error; err != nil {
+		return nil, errors.Wrap(err, "get media from database after shared update")
 	}
 
 	return &media, nil

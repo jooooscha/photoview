@@ -51,6 +51,7 @@ export const MY_TIMELINE_QUERY = gql`
         url
       }
       favorite
+      shared
       album {
         id
         title
